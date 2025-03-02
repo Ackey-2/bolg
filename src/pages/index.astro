@@ -1,0 +1,150 @@
+---
+import { Image } from 'astro:assets'
+
+import { Quote } from 'astro-pure/advanced'
+import { PostPreview } from 'astro-pure/components/pages'
+import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
+import { Button, Card, Icon, Label } from 'astro-pure/user'
+import PageLayout from '@/layouts/BaseLayout.astro'
+import ProjectCard from '@/components/home/ProjectCard.astro'
+import Section from '@/components/home/Section.astro'
+import SkillLayout from '@/components/home/SkillLayout.astro'
+import avatar from '@/assets/avatar.png'
+import config from '@/site-config'
+
+const Languages = ['C++', 'python', 'C', 'pytorch']
+const Tools = ['vscode', 'Git', 'Linux', 'Docker']
+const Other = ['Markdown']
+
+const MAX_POSTS = 10
+const allPosts = await getBlogCollection()
+const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
+---
+
+<PageLayout meta={{ title: 'Home' }} highlightColor='#659EB9'>
+  <main class='flex w-full flex-col items-center'>
+    <section class='animate mb-10 flex flex-col items-center gap-y-7' id='content-header'>
+      <Image
+        src={avatar}
+        alt='profile'
+        class='h-28 w-auto rounded-full border p-1'
+        loading='eager'
+      />
+
+      <div class='flex flex-col items-center gap-y-4'>
+        <h1 class='text-3xl font-bold'>{config.author}</h1>
+        <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
+          <Label title='China/ChengDu'>
+            <Icon name='location' class='size-5' slot='icon' />
+          </Label>
+          <Label
+            title='Source code'
+            as='a'
+            href='https://github.com/Ackey-2'
+            target='_blank'
+          >
+            <Icon name='github' class='size-5' slot='icon' />
+          </Label>
+        </div>
+      </div>
+
+      {/* Get template */}
+
+    </section>
+
+    <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
+      <Section title='About'>
+        <p class='text-muted-foreground'>Developer / Designer</p>
+         <p>
+    我是ackey,自学计算机的小硕士，一切都是最好的安排。。。
+  </p>
+    开发算法什么都想搞一点，论文写不一点点。
+  </p>  
+    目前在学习CSAPP（md好多题），同时刚开始刷leetcode。
+  </p>
+        <Button title='More about me' class='w-fit self-end' href='/about' style='ahead' />
+      </Section>
+      {
+        allPostsByDate.length > 0 && (
+          <Section title='Posts'>
+            <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
+              {allPostsByDate.map((p) => (
+                <li class='flex flex-col gap-x-2 sm:flex-row'>
+                  <PostPreview post={p} />
+                </li>
+              ))}
+            </ul>
+            <Button title='More posts' class='w-fit self-end' href='/blog' style='ahead' />
+          </Section>
+        )
+      }
+
+      {
+        /* <Section title='Experience'>
+      <Card
+        heading='Lorem Ipsum'
+        subheading='Sit amet consectetur'
+        date='Dec 2022 - Nov 2023'
+        imagePath='/src/assets/about-astro.png'
+        altText='Lorem, ipsum dolor sit'
+        imageClass='h-12 w-auto md:-start-16'
+      >
+        <ul class='ms-4 list-disc text-muted-foreground'>
+          <li>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis recusandae, ut
+            molestiae laboriosam pariatur!
+
+            <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, pariatur!</li>
+          </li>
+        </ul>
+      </Card>
+      <Card
+        heading='Lorem Ipsum'
+        subheading='Sit amet consectetur'
+        date='Dec 2022 - Nov 2023'
+        imagePath='/src/assets/about-astro.png'
+        altText='Lorem, ipsum dolor sit'
+        imageClass='h-12 w-auto md:-start-16'
+      />
+    </Section> */
+      }
+      <Section title='Education'>
+        <Card
+          as='a'
+          heading='华中科技大学'
+          subheading='电子信息工程'
+          date='september 2019 - July 2023'
+          href='https://www.hust.edu.cn/'
+          class='relative overflow-hidden bg-[url(/images/hust.jpg)] bg-cover bg-center before:absolute before:inset-0 before:bg-black/40'
+        >
+          <div class='relative z-10 text-white'>
+            {/* Content */}
+          </div>
+        </Card>
+        <Card
+          as='a'
+          heading='电子科技大学'
+          subheading='新一代电子信息工程'
+          date='september 2024 - present'
+          href='https://www.uestc.edu.cn/'
+          class='relative overflow-hidden bg-[url(/images/eutc.jpg)] bg-cover bg-center before:absolute before:inset-0 before:bg-black/40'
+        >
+          <div class='relative z-10 text-white'>
+            {/* Content */}
+          </div>
+        </Card>
+      </Section>
+
+
+
+
+
+      <Section title='Skills'>
+        <SkillLayout title='Languages' skills={Languages} />
+        <SkillLayout title='Tools' skills={Tools} />
+        <SkillLayout title='Other' skills={Other} />
+      </Section>
+    </div>
+    <Quote class='mt-12' />
+  </main>
+</PageLayout>

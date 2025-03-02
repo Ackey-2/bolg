@@ -1,0 +1,93 @@
+---
+import { Image } from 'astro:assets'
+
+import type { iconsType } from 'astro-pure/types'
+import { Button, Collapse, Icon } from 'astro-pure/user'
+import PageLayout from '@/layouts/CommonPage.astro'
+import ProjectSection from '@/components/projects/ProjectSection.astro'
+import Sponsors from '@/components/projects/Sponsors.astro'
+import alipay from '@/assets/alipay-qrcode.jpg'
+import KeyIcon from '@/assets/icons/key.svg'
+import wechat from '@/assets/wechat-qrcode.jpg'
+import config from '@/site-config'
+
+const headings = [
+  { depth: 2, slug: 'theme', text: 'Theme' },
+  { depth: 2, slug: 'programs', text: 'Programs' },
+  { depth: 2, slug: 'learnings', text: 'Learnings' }
+]
+---
+
+<PageLayout title='Projects' {headings} info={{ slug: '/projects', hideComment: true }}>
+
+
+
+  <h2 id='theme'>Theme</h2>
+  <ProjectSection
+    project={[
+      {
+        name: '🍭 Astro-theme-pure',
+        description: 'A simple, clean but powerful blog theme build by astro.',
+        links: [
+          { type: 'github', href: 'https://github.com/cworld1/astro-theme-pure' },
+          { type: 'site', href: 'https://github.com/cworld1/astro-theme-pure' },
+          {
+            type: 'doc',
+            href: 'https://github.com/cworld1/astro-theme-pure/blob/main/src/content/blog/customize/index.md'
+          }
+        ]
+      }
+    ]}
+  />
+
+  <h2 id='programs'>Programs</h2>
+  <ProjectSection
+    project={[
+
+
+    ]}
+  />
+
+
+
+  <h2 id='learnings'>Learnings</h2>
+  <ProjectSection
+    class='my-2'
+    project={[
+      {
+        name: 'Rust Learning',
+        description: 'Some notes and code about CWorld learning Rust',
+        links: [{ type: 'github', href: 'https://github.com/cworld1/rust-learning' }]
+      },
+      {
+        name: 'CS 213 Learning',
+        description: 'Notes, code and experiences for Introduction to Computer Systems course',
+        links: [
+          {
+            type: 'github',
+            href: 'https://github.com/zhuozhiyongde/Introduction-To-Computer-System-2023Fall-PKU'
+          }
+        ]
+      }
+    ]}
+  />
+
+  
+</PageLayout>
+
+<script
+  is:inline
+  type='module'
+  data-astro-rerun
+  define:vars={{ npmCDN: config.npmCDN, walineServer: config.integ.waline.server }}
+>
+  const loadPageviewCount = async () => {
+    const pageview = await import(`${npmCDN}/@waline/client@v3/dist/pageview.js`)
+    pageview.pageviewCount({
+      serverURL: walineServer,
+      path: window.location.pathname
+    })
+  }
+
+  await loadPageviewCount()
+</script>
